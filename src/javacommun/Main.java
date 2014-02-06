@@ -4,10 +4,16 @@
  */
 package javacommun;
 
+import Loader.Loader;
+import Services.Controller;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,7 +24,7 @@ import javax.swing.JTextField;
  *
  * @author Thomas Ollivier
  */
-public class JavaCommun {
+public class Main {
     /**
      * @param args the command line arguments
      */
@@ -47,7 +53,38 @@ public class JavaCommun {
         panButton.add(zoneTexte);
         panButton.add(bouton);
         //c.add(bouton);
+        
+        //Stockage des pluggins ainsi que leurs mots clef
+        Map<Object, List<String>> lesPluggins = new HashMap();
+        for(Class plugginClass : loadPluggins()) {
+            Services.Controller unPluggin = null;
+            try{
+                unPluggin = (Services.Controller)plugginClass.newInstance();
+                lesPluggins.put(unPluggin, unPluggin.getPatterns());
+            } catch(Exception e) {
+                
+            }
+        }        
     }
      
+    /**
+     * Charge les pluggins
+     * @return Liste des controllers de chaque pluggin non instancié
+     */
+    public static List<Class> loadPluggins() {
+        List<Class> lesClass = new ArrayList();
+        
+        Loader loader = Loader.getInstance();
+
+        List<String> lesFichiers = loader.findClassInPackage(Controller.class.getPackage().getName(), "Ctr");
+        
+        for(String s : lesFichiers) {
+            Class c = loader.loadClass(s);
+            if(!c.isInterface())
+                lesClass.add(c);
+        }
+        
+        return lesClass;
+    }
 }
 
