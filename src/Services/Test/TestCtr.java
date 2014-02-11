@@ -34,4 +34,9 @@ public class TestCtr implements Services.Controller {
     public String toString() {
         return new TestView().toString();
     }
+
+    @Override
+    public String getName() {
+        return "Pluggin de test";
+    }
 }

@@ -17,7 +17,7 @@ public class Traducteur {
         this.phraseATraduire = phraseATraduire;
     }
 
-    public void Traduire(){
+    public void Traduire(){/*
         Service service = new Service();
         HashMap listeService = service.getAll();
         Set clesListeService = listeService.keySet();
@@ -42,10 +42,10 @@ public class Traducteur {
                 }
             }
         }
-        return null;
+        return null;*/
     }
     
-    public void EnvoyerRequete(Service service){
+    public void EnvoyerRequete(/*Service service*/){
         
     }
     
