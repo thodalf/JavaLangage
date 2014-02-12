@@ -16,4 +16,5 @@ public interface Controller {
     public List<String> getPatterns();
     public void start(String demande);
     public String getName();
+    public String getInfo();
 }

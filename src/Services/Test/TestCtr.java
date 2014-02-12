@@ -39,4 +39,9 @@ public class TestCtr implements Services.Controller {
     public String getName() {
         return "Pluggin de test";
     }
+
+    @Override
+    public String getInfo() {
+        return "Ce pluggin de test permet de tester si l'application fonctionne correctement.\n Et apparement comme vous lisez ceci au moins on est sur que ça ne plante pas à la compilation";
+    }
 }

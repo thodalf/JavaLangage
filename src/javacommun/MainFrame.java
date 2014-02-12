@@ -8,10 +8,17 @@ package javacommun;
 
 import Loader.Loader;
 import Services.Controller;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 /**
@@ -40,6 +47,24 @@ public class MainFrame extends javax.swing.JFrame {
             }
         }
         initComponents();
+        
+        //Au double clic sur une élément de la liste on affiche une messagebox contenant la description du pluggin
+        lstPluggin.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                if(evt.getClickCount() == 2) {
+                    int index = list.locationToIndex(evt.getPoint());
+                    int i = 0;
+                    Services.Controller unPluggin = null;
+
+                    for(Object key : lesPluggins.keySet()) 
+                        if(i++ == index)
+                            unPluggin = (Services.Controller)key;
+                    
+                    javax.swing.JOptionPane.showMessageDialog(null, unPluggin.getInfo(),"Informations - "+unPluggin.getName(), javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
     }
 
     /**
