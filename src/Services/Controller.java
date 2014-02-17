@@ -7,14 +7,15 @@
 package Services;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Emile
  */
 public interface Controller {
-    public List<String> getPatterns();
-    public void start(String demande);
+    public Map< Integer , String> getPatterns();
+    public void start(int idDemande);
     public String getName();
     public String getInfo();
 }
