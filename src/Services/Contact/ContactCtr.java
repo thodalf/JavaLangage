@@ -7,6 +7,7 @@ package Services.Contact;
 import Services.Controller;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JPanel;
 
 /**
  *
@@ -37,7 +38,7 @@ public class ContactCtr implements Controller {
     }
 
     @Override
-    public void start(int idDemande) {
+    public JPanel start(int idDemande){
         switch(idDemande){
             
             case 1 :
@@ -49,8 +50,8 @@ public class ContactCtr implements Controller {
             case 3 :
                 javax.swing.JOptionPane.showMessageDialog(null, "Tu es vieux !","Quel age ai-je ?", javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 break;
-            
         }
+        return null;
     }
 
     @Override

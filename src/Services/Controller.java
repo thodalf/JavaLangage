@@ -6,8 +6,8 @@
 
 package Services;
 
-import java.util.List;
 import java.util.Map;
+import javax.swing.JPanel;
 
 /**
  *
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public interface Controller {
     public Map< Integer , String> getPatterns();
-    public void start(int idDemande);
+    public JPanel start(int idDemande);
     public String getName();
     public String getInfo();
 }

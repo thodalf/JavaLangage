@@ -8,28 +8,16 @@ package Services.Test;
 
 import Services.Controller;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Emile
  */
-public class TestCtr implements Services.Controller {
-
-    @Override
-    public List<String> getPatterns() {
-        List<String> mesPattern = new ArrayList<String>();
-        mesPattern.add("Premier pattern");
-        mesPattern.add("Deuxième pattern");
-        
-        return mesPattern;
-    }
-
-    @Override
-    public void start(String demande) {
-        
-    }   
-    
+public class TestCtr implements Services.Controller {    
     @Override
     public String toString() {
         return new TestView().toString();
@@ -43,5 +31,19 @@ public class TestCtr implements Services.Controller {
     @Override
     public String getInfo() {
         return "Ce pluggin de test permet de tester si l'application fonctionne correctement.\n Et apparement comme vous lisez ceci au moins on est sur que ça ne plante pas à la compilation";
+    }
+
+    @Override
+    public Map<Integer, String> getPatterns() {
+        Map<Integer, String> patterns = new HashMap();
+        
+        patterns.put(1, "test");
+        
+        return patterns;
+    }
+
+    @Override
+    public JPanel start(int idDemande) {
+        return new TestView();
     }
 }
