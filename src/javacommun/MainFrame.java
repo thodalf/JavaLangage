@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 /**
@@ -27,25 +28,28 @@ import javax.swing.JScrollPane;
  */
 public class MainFrame extends javax.swing.JFrame {
     private List<String> pluggins;
-    Map<Object, List<String>> lesPluggins;
+    public static enum typeMsgBox {
+        INFO (javax.swing.JOptionPane.INFORMATION_MESSAGE),
+        ERREUR (javax.swing.JOptionPane.ERROR_MESSAGE),
+        WARNING (javax.swing.JOptionPane.WARNING_MESSAGE),
+        PLAIN (javax.swing.JOptionPane.PLAIN_MESSAGE);        
+
+        private int num;
+        
+        typeMsgBox(int num) {
+            this.num = num;        
+        }
+
+        public int getNum() {
+            return num;
+        }
+    }
     
     /**
      * Creates new form MainFrame
      */
-    public MainFrame() {
-        pluggins = new ArrayList<String>();
-        //Chargement des pluggins au lancement de l'appli
-        lesPluggins = new HashMap();
-        for(Class plugginClass : loadPluggins()) {
-            Services.Controller unPluggin = null;
-            try{
-                unPluggin = (Services.Controller)plugginClass.newInstance();
-                lesPluggins.put(unPluggin, unPluggin.getPatterns());
-                pluggins.add(unPluggin.getName());
-            } catch(Exception e) {
-                
-            }
-        }
+    public MainFrame(List<String> pluggins) {
+        this.pluggins = pluggins;
         initComponents();
         
         //Au double clic sur une élément de la liste on affiche une messagebox contenant la description du pluggin
@@ -53,18 +57,18 @@ public class MainFrame extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent evt) {
                 JList list = (JList)evt.getSource();
                 if(evt.getClickCount() == 2) {
-                    int index = list.locationToIndex(evt.getPoint());
-                    int i = 0;
-                    Services.Controller unPluggin = null;
-
-                    for(Object key : lesPluggins.keySet()) 
-                        if(i++ == index)
-                            unPluggin = (Services.Controller)key;
-                    
-                    javax.swing.JOptionPane.showMessageDialog(null, unPluggin.getInfo(),"Informations - "+unPluggin.getName(), javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    MainCtr.getInstance().plugginGetInfo(list.locationToIndex(evt.getPoint()));
                 }
             }
         });
+    }
+    
+    public void afficherMsgBoxInfo(String msg, String titre, typeMsgBox type) {
+        javax.swing.JOptionPane.showMessageDialog(null, msg, titre, type.getNum());
+    }
+    
+    public void setPanel(JPanel panel) {
+        this.jPanel2.add("Pannel", panel);
     }
 
     /**
@@ -76,26 +80,54 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstPluggin = new javax.swing.JList(pluggins.toArray());
         jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Application main frame");
         setMinimumSize(new java.awt.Dimension(800, 450));
-        setPreferredSize(new java.awt.Dimension(800, 450));
 
         jTextField1.setName("txtRecherche"); // NOI18N
 
         jButton1.setText("Lancer");
         jButton1.setName("cmdRecherche"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jScrollPane2.setViewportView(lstPluggin);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Pluggins chargés");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,95 +136,48 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addGap(28, 28, 28))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))))
+                        .addComponent(jButton1))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                            .addComponent(jButton1))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {       
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
-        });
-    }
-    
-    /**
-     * Charge les pluggins
-     * @return Liste des controllers de chaque pluggin non instancié
-     */
-    public static List<Class> loadPluggins() {
-        List<Class> lesClass = new ArrayList();
-        
-        Loader loader = Loader.getInstance();
-
-        List<String> lesFichiers = loader.findClassInPackage(Controller.class.getPackage().getName(), "Ctr");
-        
-        for(String s : lesFichiers) {
-            Class c = loader.loadClass(s);
-            if(!c.isInterface())
-                lesClass.add(c);
-        }
-        
-        return lesClass;
-    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        MainCtr.getInstance().rechercher(jTextField1.getText());
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JList lstPluggin;
