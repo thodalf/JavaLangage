@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 public class MainCtr {
     private static MainCtr instance;
     private List<Services.Controller> lesPluggins = new ArrayList();
-    private MainFrame view;
+    private TestFrame view;
     
     public static MainCtr getInstance() {
         if(instance == null)
@@ -35,7 +35,7 @@ public class MainCtr {
         for(Services.Controller pluggin : lesPluggins)
             nomsPluggins.add(pluggin.getName());
         
-        view = new MainFrame(nomsPluggins);
+        view = new TestFrame();
         view.setVisible(true);
     }
     

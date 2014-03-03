@@ -7,10 +7,9 @@
 package Services.Test;
 
 import Services.Controller;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import javax.swing.JPanel;
 
 /**
@@ -37,13 +36,17 @@ public class TestCtr implements Services.Controller {
     public Map<Integer, String> getPatterns() {
         Map<Integer, String> patterns = new HashMap();
         
-        patterns.put(1, "test");
+        patterns.put(1, "(Where)(\\s+)(is)(\\s+)((?:[a-z][a-z0-9_]*))");
         
         return patterns;
     }
 
     @Override
-    public JPanel start(int idDemande) {
-        return new TestView();
+    public JPanel start(int idDemande, Matcher phrase) {
+        TestMainCtr controller = TestMainCtr.getInstance();
+        controller.initView();
+        controller.action(idDemande, phrase);
+        
+        return controller.getView();
     }
 }

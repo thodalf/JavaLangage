@@ -6,21 +6,15 @@
 
 package javacommun;
 
-import Loader.Loader;
-import Services.Controller;
-import java.awt.Dimension;
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 /**
  *
@@ -48,7 +42,8 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    public MainFrame(List<String> pluggins) {
+    public MainFrame(List<String> pluggins) {  
+        
         this.pluggins = pluggins;
         initComponents();
         
@@ -68,7 +63,16 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     public void setPanel(JPanel panel) {
-        this.jPanel2.add("Pannel", panel);
+        jPanel2.removeAll();
+        jPanel2.setLayout(new BorderLayout());
+        try {
+            jPanel2.add(panel,BorderLayout.PAGE_START);
+            jPanel2.revalidate();
+            jPanel2.repaint();
+            panel.setVisible(true);
+        } catch (Exception e) {
+            
+        }
     }
 
     /**
@@ -101,6 +105,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Application main frame");
+        setAlwaysOnTop(true);
         setMinimumSize(new java.awt.Dimension(800, 450));
 
         jTextField1.setName("txtRecherche"); // NOI18N

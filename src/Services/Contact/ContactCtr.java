@@ -5,8 +5,12 @@
 package Services.Contact;
 
 import Services.Controller;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Matcher;
 import javax.swing.JPanel;
 
 /**
@@ -20,16 +24,33 @@ public class ContactCtr implements Controller {
     private HashMap<Integer,String> patterns; 
     
     
-    public ContactCtr(){
+    public ContactCtr() throws IOException{
+        Properties properties = new Properties();
         
-        this.name = "Contact"; 
-        this.info = "Arrête de lire les infos et bosse !";
+        FileInputStream input = new FileInputStream("src/Services/Contact/ContactConf.ini");
+        try {
+            properties.load(input);
+        } catch(Exception e) {
+            
+        } finally {
+            input.close();
+        }
+        
+        this.name = properties.getProperty("nom"); 
+        this.info = properties.getProperty("info");
         
         this.patterns = new HashMap<Integer, String>(); 
-        this.patterns.put(1, "heure");
-        this.patterns.put(2, "temps");
-        this.patterns.put(3, "age");
-        
+        this.patterns.put(1, properties.getProperty("1"));
+        this.patterns.put(2, properties.getProperty("2"));
+        this.patterns.put(3, properties.getProperty("3"));
+        this.patterns.put(4, properties.getProperty("4"));
+        this.patterns.put(5, properties.getProperty("5"));
+        this.patterns.put(6, properties.getProperty("6"));
+        this.patterns.put(7, properties.getProperty("7"));
+        this.patterns.put(8, properties.getProperty("8"));
+        this.patterns.put(9, properties.getProperty("9"));
+        this.patterns.put(10, properties.getProperty("10"));
+        this.patterns.put(11, properties.getProperty("11"));
     }
     
     @Override
@@ -38,20 +59,12 @@ public class ContactCtr implements Controller {
     }
 
     @Override
-    public JPanel start(int idDemande){
-        switch(idDemande){
-            
-            case 1 :
-                javax.swing.JOptionPane.showMessageDialog(null, "Il est midi !","Quelle heure est-il ?", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                break;
-            case 2 :
-                javax.swing.JOptionPane.showMessageDialog(null, "Il fait beau !","Quel temps fait-il ?", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                break;
-            case 3 :
-                javax.swing.JOptionPane.showMessageDialog(null, "Tu es vieux !","Quel age ai-je ?", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                break;
-        }
-        return null;
+    public JPanel start(int idDemande, Matcher phrase){
+        ContactMainCtr controller = ContactMainCtr.getInstance();
+        controller.initView();
+        controller.action(idDemande, phrase);
+        
+        return controller.getView();
     }
 
     @Override

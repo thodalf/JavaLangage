@@ -7,6 +7,7 @@
 package Services;
 
 import java.util.Map;
+import java.util.regex.Matcher;
 import javax.swing.JPanel;
 
 /**
@@ -15,7 +16,7 @@ import javax.swing.JPanel;
  */
 public interface Controller {
     public Map< Integer , String> getPatterns();
-    public JPanel start(int idDemande);
+    public JPanel start(int idDemande, Matcher phrase);
     public String getName();
     public String getInfo();
 }
